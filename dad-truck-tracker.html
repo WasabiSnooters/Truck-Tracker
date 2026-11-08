@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Truck Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f2ed; --surface:#ffffff; --surface2:#ece9e2; --ink:#1a1d21; --muted:#5c6570; --line:#ddd8cc;
+  --accent:#c2410c; --accent-ink:#fff; --green:#166534; --green-bg:#dcfce7; --amber:#92400e; --amber-bg:#fef3c7; --red:#991b1b; --red-bg:#fee2e2; --blue-bg:#e0e7ff; --blue:#3730a3;
+  --chip:#e8e2d6;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#121416; --surface:#1c1f23; --surface2:#26292e; --ink:#f1efe9; --muted:#a8b0b8; --line:#33373d; --accent:#f97316; --green-bg:#14532d; --green:#bbf7d0; --amber-bg:#451a03; --amber:#fcd34d; --red-bg:#450a0a; --red:#fca5a5; --blue-bg:#1e1b4b; --blue:#c7d2fe; --chip:#2a2d31; }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Barlow",system-ui,sans-serif;line-height:1.45}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 16px 48px}
+.top{padding:8px 0 14px;border-bottom:1px solid var(--line);margin-bottom:16px}
+h1{font-family:"Barlow Condensed",sans-serif;font-size:clamp(38px,6vw,52px);line-height:.95;margin:0 0 6px;letter-spacing:.01em;text-transform:uppercase}
+.checked{font-size:14px;color:var(--muted);margin:0;font-weight:600}
+.changes{margin-top:10px;background:var(--amber-bg);color:var(--amber);border-radius:10px;padding:10px 12px;font-size:14px;max-width:760px}
+.changes strong{font-weight:700}
+/* Tabs */
+.tabs{display:flex;gap:8px;background:var(--surface2);padding:6px;border-radius:999px;width:fit-content;max-width:100%;flex-wrap:wrap}
+.tab{border:0;background:transparent;padding:10px 18px;border-radius:999px;font-weight:700;font-size:15px;cursor:pointer;color:var(--muted)}
+.tab.active{background:var(--ink);color:var(--bg)}
+.tab small{opacity:.75;font-weight:600}
+/* Filters */
+.controls-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+.filter-toggle{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);color:var(--ink);padding:10px 16px;border-radius:999px;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit}
+.filter-toggle:hover{border-color:var(--accent)}
+.filter-toggle .chev{transition:transform .18s ease;font-size:13px;line-height:1}
+.filter-toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.filter-toggle .active-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:none}
+.filter-toggle.has-active .active-dot{display:inline-block}
+.sort-control{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 5px 5px 14px}
+.sort-control label{margin:0;white-space:nowrap}
+.sort-control select{width:auto;border:0;background:var(--bg);border-radius:999px;padding:7px 10px;font-size:14px;font-weight:600;cursor:pointer}
+.sort-control select:focus{outline:2px solid var(--accent);outline-offset:1px}
+@media(max-width:560px){.sort-control{flex:1 1 auto}.sort-control select{flex:1}}
+.filters{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0 4px}
+.filters[hidden]{display:none}
+.filters-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px}
+@media(max-width:800px){.filters-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.filters-grid{grid-template-columns:1fr}}
+label{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px}
+input,select{width:100%;padding:10px 11px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:15px;font-family:inherit}
+.toggles{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.toggle{display:inline-flex;align-items:center;gap:7px;background:var(--bg);border:1px solid var(--line);padding:8px 12px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer;user-select:none}
+.toggle input{width:auto;accent-color:var(--accent)}
+.toggle.on{border-color:var(--accent);background:color-mix(in srgb, var(--accent) 12%, var(--bg))}
+.countline{font-size:14px;color:var(--muted);margin:6px 2px 0}
+.countline b{color:var(--ink)}
+/* Sections */
+h2{font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;font-size:28px;letter-spacing:.02em;margin:26px 0 4px;display:flex;align-items:baseline;gap:10px}
+h2 span{font-family:"Barlow",sans-serif;text-transform:none;font-size:14px;color:var(--muted);font-weight:500;letter-spacing:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:12px}
+.grid.top5{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.grid,.grid.top5{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.grid,.grid.top5{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;position:relative}
+.card.top{border-top:4px solid var(--accent)}
+.card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.rank{font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--bg);padding:4px 8px;border-radius:999px;white-space:nowrap}
+.rank.gold{background:var(--accent);color:#fff}
+.title{font-weight:700;font-size:17px;line-height:1.2}
+.title small{display:block;font-weight:500;color:var(--muted);font-size:13px;margin-top:2px}
+.price{font-family:"Barlow Condensed",sans-serif;font-size:32px;line-height:1;font-weight:700}
+.price small{font-size:13px;font-family:"Barlow",sans-serif;color:var(--muted);font-weight:500}
+.price-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.price-track{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;margin-top:-4px}
+.lowest-label{color:var(--muted);font-weight:600}
+.lowest-val{font-weight:700;color:var(--ink)}
+.lowest-note{color:var(--muted);font-size:12.5px}
+.trend{display:inline-flex;align-items:center;gap:3px;font-weight:700;font-size:12.5px;padding:3px 7px;border-radius:999px;line-height:1}
+.trend-down{background:var(--green-bg);color:var(--green)}
+.trend-up{background:var(--red-bg);color:var(--red)}
+.trend-flat{background:var(--surface2);color:var(--muted)}
+.card.sold{opacity:.72}
+.card.sold .price{text-decoration:line-through;text-decoration-thickness:2px}
+.sold-banner{font-weight:700;font-size:13px;background:var(--red-bg);color:var(--red);border-radius:8px;padding:7px 9px;text-align:center;letter-spacing:.02em}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:14px}
+.meta div span{color:var(--muted);display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.badge{font-size:12px;font-weight:700;padding:4px 8px;border-radius:999px}
+.b-green{background:var(--green-bg);color:var(--green)} .b-amber{background:var(--amber-bg);color:var(--amber)} .b-red{background:var(--red-bg);color:var(--red)} .b-blue{background:var(--blue-bg);color:var(--blue)} .b-gray{background:var(--surface2);color:var(--muted)}
+.note{font-size:13.5px;background:var(--surface2);border-radius:10px;padding:9px 10px}
+.note.warn-note{background:var(--amber-bg);color:var(--amber)}
+.cta{margin-top:auto;display:flex;gap:8px}
+.btn{flex:1;text-align:center;text-decoration:none;font-weight:700;padding:11px 12px;border-radius:10px;background:var(--ink);color:var(--bg);font-size:15px}
+.btn:hover{opacity:.92}
+.source{font-size:12px;color:var(--muted);text-align:center;align-self:center;white-space:nowrap}
+.empty{display:none;background:var(--surface);border:1px dashed var(--line);border-radius:16px;padding:28px;text-align:center;color:var(--muted)}
+footer{margin-top:32px;border-top:1px solid var(--line);padding-top:16px;font-size:13.5px;color:var(--muted)}
+footer h3{color:var(--ink);font-size:15px;margin:14px 0 6px}
+footer ul{margin:6px 0;padding-left:18px}
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Truck Tracker</h1>
+    <p class="checked">Checked Nov 7, 2026 at 5:46 PM CST · 30 trucks — 15 4WD, 15 2WD</p>
+    <div class="changes"><strong>Notable:</strong> Accident reports disagree between sites on two trucks — the 2020 Silverado LT in Pensacola and the 2022 Silverado Custom in Wiggins — both flagged on their cards. No 2020–21 Tundra CrewMax in range.</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs" role="tablist" aria-label="Drivetrain">
+    <button class="tab active" data-drive="4WD">4WD <small>· 15 trucks</small></button>
+    <button class="tab" data-drive="2WD">2WD <small>· 15 trucks</small></button>
+    <button class="tab" data-drive="ALL">All trucks <small>· 30</small></button>
+  </div>
+
+  <!-- Filters (collapsible) -->
+  <div class="controls-row">
+    <button class="filter-toggle" id="filterToggle" type="button" aria-expanded="false" aria-controls="filterPanel">
+      <span>Filters</span><span class="active-dot" aria-hidden="true"></span><span class="chev" aria-hidden="true">▾</span>
+    </button>
+    <div class="sort-control">
+      <label for="sort">Sort by</label>
+      <select id="sort"><option value="rank">Tracker rank</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option><option value="miles-asc">Mileage: low to high</option><option value="dist-asc">Distance: closest first</option><option value="year-desc">Year: newest first</option></select>
+    </div>
+    <p class="countline" id="countLine" style="margin:0"></p>
+  </div>
+  <div class="filters" id="filterPanel" hidden>
+    <div class="filters-grid">
+      <div><label for="q">Search</label><input id="q" type="search" placeholder="Silverado, Hemi, Daphne, XL…"></div>
+      <div><label for="make">Make</label><select id="make"><option value="">All makes</option><option>Chevrolet</option><option>Ford</option><option>GMC</option><option>Nissan</option><option>Ram</option></select></div>
+      <div><label for="engine">Engine</label><select id="engine"><option value="">All engines</option><option value="2.7">2.7 Turbo / EcoBoost</option><option value="3.5">3.5 EcoBoost</option><option value="5.0">5.0 V8</option><option value="5.3">5.3 V8</option><option value="5.6">5.6 V8</option><option value="5.7">5.7 Hemi V8</option></select></div>
+      <div><label for="maxPrice">Max price</label><select id="maxPrice"><option value="99999">Any price</option><option value="26000">Under $26,000</option><option value="28000">Under $28,000</option><option value="30000">Under $30,000</option><option value="32000">Under $32,000</option><option value="34000">Under $34,000</option></select></div>
+      <div><label for="maxMiles">Max mileage</label><select id="maxMiles"><option value="999999">Any mileage</option><option value="60000">Under 60k mi</option><option value="70000">Under 70k mi</option><option value="80000">Under 80k mi — preferred</option><option value="90000">Under 90k mi</option></select></div>
+      <div><label for="maxDist">Max distance</label><select id="maxDist"><option value="999">Any distance</option><option value="25">Within 25 mi</option><option value="40">Within 40 mi</option><option value="65">Within 65 mi</option><option value="85">Within 85 mi</option></select></div>
+      <div><label for="deal">Deal rating</label><select id="deal"><option value="">Any rating</option><option value="Great">Great Deal only</option><option value="Good">Good Deal or better</option></select></div>
+    </div>
+    <div class="toggles">
+      <label class="toggle" id="towToggle"><input type="checkbox" id="towOnly"> Tow package only</label>
+      <label class="toggle" id="cleanToggle"><input type="checkbox" id="cleanOnly"> No accidents reported</label>
+      <label class="toggle" id="oneToggle"><input type="checkbox" id="oneOwnerOnly"> 1-owner only</label>
+      <button id="resetBtn" style="margin-left:auto;background:none;border:0;font-weight:700;cursor:pointer;color:var(--accent);padding:8px 4px">Reset all filters</button>
+    </div>
+  </div>
+
+  <h2 id="topHeading">Top 5 <span id="topSub"></span></h2>
+  <div class="grid top5" id="topGrid"></div>
+
+  <h2 id="runHeading">Runners-up <span>Next 10 on this side — still worth a look</span></h2>
+  <div class="grid" id="runGrid"></div>
+  <div class="empty" id="emptyState">No trucks match those filters. Try widening the price or mileage, or hit “Reset all filters.”</div>
+
+  <footer>
+    <p><strong style="color:var(--ink)">Listings checked Nov 7, 2026 at 5:46 PM CST.</strong> Prices, mileage, and availability were as listed that day and can change or sell at any time. No sellers have been contacted.</p>
+    <h3>Price tracking</h3>
+    <ul>
+      <li>Baseline set Nov 7, 2026 — <strong style="color:var(--ink)">Lowest seen</strong> starts at the listed price on every truck and only goes down, never up.</li>
+      <li>Each card shows Lowest seen next to the current price. Future checks will add <span style="color:var(--green);font-weight:700">▼ drop</span> / <span style="color:var(--red);font-weight:700">▲ rise</span> arrows vs. the last check and flag listings that have sold.</li>
+    </ul>
+    <h3>Search criteria</h3>
+    <ul>
+      <li>Full-size Crew Cab, 5.5 ft bed where confirmed · 2020 &amp; newer · Gas only</li>
+      <li>$30,000 target, $34,000 max · Under 100,000 mi (prefer under 80,000)</li>
+      <li>Within 100 mi of 36567 · Tow 7,000 lb+ · Tow package nice-to-have, not required</li>
+      <li>Engines: F-150 5.0 / 2.7 EcoBoost (3.5 in 2021+ only), Silverado / Sierra 5.3 / 2.7 TurboMax, Ram 5.7 Hemi 2020–24, Titan 5.6, Tundra 5.7 2020–21 only</li>
+      <li>Excluded: F-150 PowerBoost, GM 6.2 V8, Ram Hurricane / EcoDiesel, 2022+ Tundra twin-turbo without a replaced recall engine</li>
+    </ul>
+    <p>Verify the exact tow rating and bed length by VIN before buying — listings don’t always publish them.</p>
+  </footer>
+</div>
+
+<script>
+var TRUCKS = [
+/* ===== 4WD TOP 5 ===== */
+{id:1,drive:"4WD",tier:"top",rank:1,year:2023,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:27888,lowest:27888,prevPrice:27888,firstSeen:"2026-11-07",sold:false,miles:73109,city:"Daphne, AL",dist:21,source:"Cars.com",url:"https://www.cars.com/vehicledetail/70a8deff-6ded-4e6f-b3e1-451520636852/",tow:false,deal:"",accidents:"none",owners:"1 owner",note:"Cheapest strong 4WD near home — 21 miles away in Daphne, 1 owner, no accidents reported."},
+{id:2,drive:"4WD",tier:"top",rank:2,year:2023,make:"GMC",model:"Sierra 1500",trim:"Pro",engine:"2.7 TurboMax",engineKey:"2.7",price:28662,lowest:28662,prevPrice:28662,firstSeen:"2026-11-07",sold:false,miles:81606,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/details/463077899",tow:true,deal:"Great Deal",accidents:"none",owners:"",note:"Best 4WD value with a trailer package — ready for the pontoon."},
+{id:3,drive:"4WD",tier:"top",rank:3,year:2024,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:30405,lowest:30405,prevPrice:30405,firstSeen:"2026-11-07",sold:false,miles:61752,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/details/458430640",tow:true,deal:"Great Deal",accidents:"none",owners:"1 owner",note:"Newest 4WD in the Top 5. Same truck listed on all three sites — price is consistent."},
+{id:4,drive:"4WD",tier:"top",rank:4,year:2022,make:"GMC",model:"Sierra 1500",trim:"SLE",engine:"2.7 TurboMax",engineKey:"2.7",price:30397,lowest:30397,prevPrice:30397,firstSeen:"2026-11-07",sold:false,miles:63379,city:"Thomasville, AL",dist:92,source:"CarGurus",url:"https://www.cargurus.com/details/461474267",tow:true,deal:"Great Deal",accidents:"none",owners:"1 owner",note:"Higher trim than most here (SLE), tow package, 1 owner. Farthest drive in the 4WD Top 5 at 92 miles."},
+{id:5,drive:"4WD",tier:"top",rank:5,year:2023,make:"Chevrolet",model:"Silverado 1500",trim:"Work Truck",engine:"5.3 V8",engineKey:"5.3",price:29971,lowest:29971,prevPrice:29971,firstSeen:"2026-11-07",sold:false,miles:66044,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/details/448049900",tow:true,deal:"",accidents:"none",owners:"1 owner",note:"The V8 pick in the 4WD Top 5 — 5.3 with tow package, 1 owner, no accidents."},
+/* ===== 4WD RUNNERS-UP ===== */
+{id:6,drive:"4WD",tier:"run",rank:6,year:2020,make:"Chevrolet",model:"Silverado 1500",trim:"LT All-Star",engine:"5.3 V8",engineKey:"5.3",price:29638,lowest:29638,prevPrice:29638,firstSeen:"2026-11-07",sold:false,miles:69398,city:"Pensacola, FL",dist:26,source:"AutoTrader",url:"https://www.autotrader.com/cars-for-sale/vehicle/788807647",tow:true,deal:"Great Price",accidents:"conflict",owners:"",note:"Tow package + integrated brake controller, close in Pensacola.",warn:"Accident reports disagree: AutoTrader says none, Cars.com says accidents reported on what looks like the same truck. Verify by VIN."},
+{id:7,drive:"4WD",tier:"run",rank:7,year:2022,make:"Ram",model:"1500",trim:"Big Horn",engine:"5.7 Hemi V8",engineKey:"5.7",price:28423,lowest:28423,prevPrice:28423,firstSeen:"2026-11-07",sold:false,miles:78454,city:"Moss Point, MS",dist:59,source:"CarGurus",url:"https://www.cargurus.com/details/458293003",tow:false,deal:"Great Deal",accidents:"one",owners:"",note:"Hemi power at a Great Deal price.",warn:"1 accident reported."},
+{id:8,drive:"4WD",tier:"run",rank:8,year:2020,make:"Ford",model:"F-150",trim:"XL",engine:"5.0 V8",engineKey:"5.0",price:29985,lowest:29985,prevPrice:29985,firstSeen:"2026-11-07",sold:false,miles:74382,city:"Pascagoula, MS",dist:61,source:"Cars.com",url:"https://www.cars.com/vehicledetail/5c0ee44e-97c1-48e1-a7ae-59d8da3ad4ac/",tow:false,deal:"",accidents:"none",owners:"",note:"The 5.0 Coyote — Ford's most proven engine in this search — in 4WD under $30k."},
+{id:9,drive:"4WD",tier:"run",rank:9,year:2023,make:"Nissan",model:"Titan",trim:"SV",engine:"5.6 V8",engineKey:"5.6",price:29944,lowest:29944,prevPrice:29944,firstSeen:"2026-11-07",sold:false,miles:62005,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/search?sourceContext=carGurusHomePageModel&zip=36567&hideNationwideShipping=true&isDeliveryEnabled=false&makeModelTrimPaths=m12%2Fd251&priceDropsOnly=false&maxPrice=34000&startYear=2020&maxMileage=100000&distance=100&nonShippableBaseline=33&sortDirection=ASC&sortType=PRICE&cabins=CREW&fuelTypes=GASOLINE",tow:false,deal:"Good Deal",accidents:"unknown",owners:"",note:"Simple, reliable 5.6 V8. Link opens the matching CarGurus search — look for the D'Iberville SV at this price/mileage."},
+{id:10,drive:"4WD",tier:"run",rank:10,year:2022,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:28648,lowest:28648,prevPrice:28648,firstSeen:"2026-11-07",sold:false,miles:78726,city:"Wiggins, MS",dist:94,source:"CarGurus",url:"https://www.cargurus.com/details/459735750",tow:true,deal:"",accidents:"conflict",owners:"",note:"Tow package, under $29k.",warn:"Accident reports disagree: CarGurus says 0 accidents, Cars.com says accidents reported. Verify by VIN."},
+{id:11,drive:"4WD",tier:"run",rank:11,year:2021,make:"Ford",model:"F-150",trim:"Lariat",engine:"3.5 EcoBoost",engineKey:"3.5",price:30790,lowest:30790,prevPrice:30790,firstSeen:"2026-11-07",sold:false,miles:76615,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/details/460571074",tow:true,deal:"Great Deal",accidents:"none",owners:"",note:"Nicest trim in the whole tracker — Lariat with tow package, listed $6,869 below market. This is the one 3.5 EcoBoost exception in the list."},
+{id:12,drive:"4WD",tier:"run",rank:12,year:2020,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"5.3 V8",engineKey:"5.3",price:32065,lowest:32065,prevPrice:32065,firstSeen:"2026-11-07",sold:false,miles:31274,city:"Pensacola, FL",dist:21,source:"Cars.com",url:"https://www.cars.com/vehicledetail/39bf7271-c207-4cc7-a345-126c24d5ca1c/",tow:false,deal:"",accidents:"none",owners:"",note:"Lowest-mileage 4WD by a wide margin — just 31k miles. Over the $30k target but inside the $34k max, and close in Pensacola."},
+{id:13,drive:"4WD",tier:"run",rank:13,year:2021,make:"Ram",model:"1500",trim:"Big Horn",engine:"5.7 Hemi V8",engineKey:"5.7",price:25995,lowest:25995,prevPrice:25995,firstSeen:"2026-11-07",sold:false,miles:70861,city:"Eight Mile, AL",dist:37,source:"Cars.com",url:"https://www.cars.com/vehicledetail/40236d6c-911c-4497-9a6a-ff1a190a6270/",tow:false,deal:"",accidents:"reported",owners:"Multiple owners",note:"Cheapest 4WD on either list — the price reflects the history below.",warn:"Accidents reported, multiple owners. Look it over carefully."},
+{id:14,drive:"4WD",tier:"run",rank:14,year:2020,make:"Chevrolet",model:"Silverado 1500",trim:"LT Trail Boss",engine:"5.3 V8",engineKey:"5.3",price:29998,lowest:29998,prevPrice:29998,firstSeen:"2026-11-07",sold:false,miles:82477,city:"Daphne, AL",dist:14,source:"AutoTrader",url:"https://www.autotrader.com/cars-for-sale/vehicle/789343080",tow:true,deal:"",accidents:"unknown",owners:"",note:"Closest truck in the tracker — 14 miles in Daphne — with tow package. Trail Boss sits higher and rides firmer than a standard LT."},
+{id:15,drive:"4WD",tier:"run",rank:15,year:2022,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:27988,lowest:27988,prevPrice:27988,firstSeen:"2026-11-07",sold:false,miles:85108,city:"Fort Walton Beach, FL",dist:56,source:"CarGurus",url:"https://www.cargurus.com/details/458918354",tow:false,deal:"",accidents:"none",owners:"",note:"Clean-history 4WD under $28k; mileage is over the preferred 80k but well under the 100k cap."},
+/* ===== 2WD TOP 5 ===== */
+{id:16,drive:"2WD",tier:"top",rank:1,year:2023,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:29421,lowest:29421,prevPrice:29421,firstSeen:"2026-11-07",sold:false,miles:35895,city:"Moss Point, MS",dist:59,source:"CarGurus",url:"https://www.cargurus.com/details/455317636",tow:false,deal:"Great Deal",accidents:"none",owners:"1 owner",note:"Lowest mileage in the whole tracker apart from one — 35,895 mi — with a Great Deal rating, 0 accidents, 1 owner."},
+{id:17,drive:"2WD",tier:"top",rank:2,year:2021,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 Turbo",engineKey:"2.7",price:29878,lowest:29878,prevPrice:29878,firstSeen:"2026-11-07",sold:false,miles:19319,city:"Pensacola, FL",dist:21,source:"Cars.com",url:"https://www.cars.com/vehicledetail/382d1349-b6a2-4a25-ae4b-10d1802bad8e/",tow:false,deal:"",accidents:"none",owners:"1 owner",note:"Lowest mileage overall — just 19,319 miles — and only 21 miles away."},
+{id:18,drive:"2WD",tier:"top",rank:3,year:2022,make:"Nissan",model:"Titan",trim:"SV",engine:"5.6 V8",engineKey:"5.6",price:26990,lowest:26990,prevPrice:26990,firstSeen:"2026-11-07",sold:false,miles:57149,city:"Mobile, AL",dist:40,source:"Cars.com",url:"https://www.cars.com/vehicledetail/718e7146-0cc6-440a-ad67-cf481c0d4651/",tow:false,deal:"",accidents:"none",owners:"",note:"Cheapest V8 in the Top 5s. Clean title, no accidents reported."},
+{id:19,drive:"2WD",tier:"top",rank:4,year:2022,make:"Ford",model:"F-150",trim:"XL",engine:"5.0 V8",engineKey:"5.0",price:29474,lowest:29474,prevPrice:29474,firstSeen:"2026-11-07",sold:false,miles:70562,city:"Lucedale, MS",dist:63,source:"Cars.com",url:"https://www.cars.com/vehicledetail/2c100d9c-6e8f-413b-9d01-5c3c3df64851/",tow:true,deal:"",accidents:"none",owners:"",note:"The pontoon pick: 5.0 V8 plus Trailer Tow Package, Class IV hitch, and integrated trailer brake controller."},
+{id:20,drive:"2WD",tier:"top",rank:5,year:2021,make:"Ram",model:"1500",trim:"Big Horn",engine:"5.7 Hemi V8",engineKey:"5.7",price:29795,lowest:29795,prevPrice:29795,firstSeen:"2026-11-07",sold:false,miles:37955,city:"Mobile, AL",dist:34,source:"Cars.com",url:"https://www.cars.com/vehicledetail/4087bba8-f0c5-49fb-aebd-7b9c4e609568/",tow:false,deal:"",accidents:"none",owners:"1 owner",note:"Low miles for a Hemi — 37,955 — 1 owner, no accidents.",warn:"Open recall reported — ask the seller to confirm it's completed before buying."},
+/* ===== 2WD RUNNERS-UP ===== */
+{id:21,drive:"2WD",tier:"run",rank:6,year:2021,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 Turbo",engineKey:"2.7",price:22440,lowest:22440,prevPrice:22440,firstSeen:"2026-11-07",sold:false,miles:90039,city:"Mobile, AL",dist:40,source:"CarGurus",url:"https://www.cargurus.com/details/462393093",tow:true,deal:"Great Deal",accidents:"none",owners:"",note:"Cheapest truck in the tracker, with tow package and 0 accidents. Trade-off is 90k miles — over the preferred 80k, under the cap."},
+{id:22,drive:"2WD",tier:"run",rank:7,year:2022,make:"Ram",model:"1500 Classic",trim:"Tradesman",engine:"5.7 Hemi V8",engineKey:"5.7",price:24277,lowest:24277,prevPrice:24277,firstSeen:"2026-11-07",sold:false,miles:56196,city:"Pensacola, FL",dist:21,source:"CarGurus",url:"https://www.cargurus.com/details/463395194",tow:false,deal:"Great Deal",accidents:"one",owners:"1 owner",note:"Great Deal Hemi money, close in Pensacola. This is the older Classic body style, not the newer Ram body.",warn:"1 accident reported, no damage reported."},
+{id:23,drive:"2WD",tier:"run",rank:8,year:2024,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:29999,lowest:29999,prevPrice:29999,firstSeen:"2026-11-07",sold:false,miles:52931,city:"Mobile, AL",dist:40,source:"Cars.com",url:"https://www.cars.com/vehicledetail/41723a9d-67b7-48ce-90aa-55cf30732f3b/",tow:false,deal:"",accidents:"none",owners:"",note:"Newest truck on either list — a 2024 right at the $30k target.",warn:"Open recall was reported on this listing in the first sweep — confirm status with the seller."},
+{id:24,drive:"2WD",tier:"run",rank:9,year:2023,make:"Ram",model:"1500",trim:"Lone Star",engine:"5.7 Hemi V8",engineKey:"5.7",price:27813,lowest:27813,prevPrice:27813,firstSeen:"2026-11-07",sold:false,miles:72690,city:"Lucedale, MS",dist:65,source:"Cars.com",url:"https://www.cars.com/vehicledetail/d69c88c7-1b59-4418-9419-ad456cbc7fc1/",tow:true,deal:"",accidents:"none",owners:"1 owner",note:"Hemi with Trailer Tow Group, 1 owner, no accidents — a strong all-rounder."},
+{id:25,drive:"2WD",tier:"run",rank:10,year:2023,make:"Ram",model:"1500",trim:"Big Horn",engine:"5.7 Hemi V8",engineKey:"5.7",price:28005,lowest:28005,prevPrice:28005,firstSeen:"2026-11-07",sold:false,miles:63782,city:"D'Iberville, MS",dist:80,source:"Cars.com",url:"https://www.cars.com/vehicledetail/2ed6a076-d379-465c-b417-855594221d6e/",tow:false,deal:"",accidents:"unknown",owners:"",note:"Listed on both Cars.com and CarGurus — same truck, same story. Mid-pack miles for a 2023."},
+{id:26,drive:"2WD",tier:"run",rank:11,year:2023,make:"Ford",model:"F-150",trim:"XL",engine:"2.7 EcoBoost",engineKey:"2.7",price:26398,lowest:26398,prevPrice:26398,firstSeen:"2026-11-07",sold:false,miles:89800,city:"Pensacola, FL",dist:21,source:"CarGurus",url:"https://www.cargurus.com/details/462816150",tow:false,deal:"Good Deal",accidents:"none",owners:"1 owner",note:"Good Deal, 0 accidents, 1 owner, 5.5 ft bed confirmed — close in Pensacola. Miles are near the top of the range."},
+{id:27,drive:"2WD",tier:"run",rank:12,year:2020,make:"Ford",model:"F-150",trim:"XL",engine:"2.7 EcoBoost",engineKey:"2.7",price:27413,lowest:27413,prevPrice:27413,firstSeen:"2026-11-07",sold:false,miles:65076,city:"Daphne, AL",dist:20,source:"CarGurus",url:"https://www.cargurus.com/details/462272402",tow:false,deal:"",accidents:"none",owners:"1 owner",note:"Same recipe as #11 with 25k fewer miles for $1k more — and only 20 miles away in Daphne. 5.5 ft bed confirmed."},
+{id:28,drive:"2WD",tier:"run",rank:13,year:2021,make:"Chevrolet",model:"Silverado 1500",trim:"LT",engine:"5.3 V8",engineKey:"5.3",price:28395,lowest:28395,prevPrice:28395,firstSeen:"2026-11-07",sold:false,miles:69760,city:"Mobile, AL",dist:34,source:"Cars.com",url:"https://www.cars.com/vehicledetail/47adb589-da73-4b4f-966f-3e733029b242/",tow:false,deal:"",accidents:"none",owners:"",note:"LT trim steps up from the Customs, V8 power, no accidents.",warn:"2021 5.3 V8: check the build date — avoid the Sep 2020–Mar 2021 lifter batch, or confirm lifters were serviced."},
+{id:29,drive:"2WD",tier:"run",rank:14,year:2021,make:"Chevrolet",model:"Silverado 1500",trim:"RST",engine:"5.3 V8",engineKey:"5.3",price:29030,lowest:29030,prevPrice:29030,firstSeen:"2026-11-07",sold:false,miles:72856,city:"Daphne, AL",dist:21,source:"Cars.com",url:"https://www.cars.com/vehicledetail/96ac6741-7857-43c3-b778-4fbe263a6d62/",tow:false,deal:"",accidents:"none",owners:"",note:"Sportier RST trim, V8, close in Daphne, no accidents.",warn:"2021 5.3 V8: same lifter build-date check as the LT above."},
+{id:30,drive:"2WD",tier:"run",rank:15,year:2023,make:"Ram",model:"1500",trim:"Tradesman",engine:"5.7 Hemi V8",engineKey:"5.7",price:29971,lowest:29971,prevPrice:29971,firstSeen:"2026-11-07",sold:false,miles:48285,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/search?sourceContext=carGurusHomePageModel&zip=36567&hideNationwideShipping=true&isDeliveryEnabled=false&makeModelTrimPaths=m191%2Fd2110&priceDropsOnly=false&maxPrice=34000&startYear=2020&maxMileage=100000&distance=100&nonShippableBaseline=33&sortDirection=ASC&sortType=PRICE&cabins=CREW&fuelTypes=GASOLINE&enginePaths=V8",tow:false,deal:"",accidents:"unknown",owners:"",note:"Low miles for the money — 48,285 on a 2023 Hemi. Work-truck trim, so check the equipment list. Link opens the matching CarGurus search."}
+];
+
+var state = { drive:"4WD" };
+function fmt(n){ return n.toLocaleString("en-US"); }
+function $(id){ return document.getElementById(id); }
+
+function priceTrack(t){
+  // Baseline: Nov 7, 2026 — lowest seen starts at listed price and only goes down on future checks.
+  var lowest = (typeof t.lowest==="number") ? t.lowest : t.price;
+  if(lowest>t.price) lowest=t.price; // lowest never above current
+  var prev = (typeof t.prevPrice==="number") ? t.prevPrice : t.price;
+  var diffVsPrev = t.price - prev;
+  var diffVsLowest = t.price - lowest;
+  var trend="";
+  if(t.sold){
+    trend='<span class="trend trend-up">SOLD / GONE</span>';
+  } else if(diffVsPrev<0){
+    trend='<span class="trend trend-down">▼ $'+fmt(Math.abs(diffVsPrev))+' drop</span>';
+  } else if(diffVsPrev>0){
+    trend='<span class="trend trend-up">▲ $'+fmt(diffVsPrev)+' rise</span>';
+  } else if(diffVsLowest===0){
+    trend='<span class="trend trend-flat">— At lowest seen</span>';
+  } else {
+    trend='<span class="trend trend-up">▲ $'+fmt(diffVsLowest)+' above lowest</span>';
+  }
+  var note = diffVsLowest===0 ? 'since Nov 7, 2026' : 'was $'+fmt(lowest)+' on a prior check';
+  return '<div class="price-track"><span class="lowest-label">Lowest seen</span><span class="lowest-val">$'+fmt(lowest)+'</span>'+trend+'<span class="lowest-note">'+note+'</span></div>';
+}
+function badges(t){
+  var h="";
+  if(t.sold) h+='<span class="badge b-red">Sold / No longer listed</span>';
+  if(t.tow) h+='<span class="badge b-blue">Tow package</span>';
+  if(t.deal) h+='<span class="badge b-green">'+t.deal+'</span>';
+  if(t.accidents==="none") h+='<span class="badge b-green">0 accidents</span>';
+  if(t.accidents==="one") h+='<span class="badge b-amber">1 accident</span>';
+  if(t.accidents==="reported") h+='<span class="badge b-red">Accidents reported</span>';
+  if(t.accidents==="conflict") h+='<span class="badge b-red">Accident reports conflict</span>';
+  if(t.owners) h+='<span class="badge b-gray">'+t.owners+'</span>';
+  h+='<span class="badge b-gray">'+t.drive+'</span>';
+  return h;
+}
+function card(t){
+  var warn = t.warn ? '<div class="note warn-note"><strong>Heads-up:</strong> '+t.warn+'</div>' : '';
+  var soldBanner = t.sold ? '<div class="sold-banner">SOLD — no longer listed · Last seen $'+fmt(t.price)+'</div>' : '';
+  return '<article class="card'+(t.tier==="top"?" top":"")+(t.sold?" sold":"")+'">'
+    +'<div class="card-head"><div class="title">'+t.year+' '+t.make+' '+t.model+' '+t.trim+'<small>'+t.engine+' • Crew Cab • '+t.drive+'</small></div><span class="rank'+(t.tier==="top"?" gold":"")+'">#'+t.rank+' '+t.drive+'</span></div>'
+    +soldBanner
+    +'<div class="price-row"><div class="price">$'+fmt(t.price)+' <small>'+(t.sold?'last listed':'listed')+'</small></div></div>'
+    +priceTrack(t)
+    +'<div class="meta"><div><span>Mileage</span>'+fmt(t.miles)+' mi</div><div><span>Location</span>'+t.city+' ('+t.dist+' mi)</div><div><span>Engine</span>'+t.engine+'</div><div><span>Source</span>'+t.source+'</div></div>'
+    +'<div class="badges">'+badges(t)+'</div>'
+    +'<div class="note">'+t.note+'</div>'+warn
+    +'<div class="cta"><a class="btn" href="'+t.url+'" target="_blank" rel="noopener">View listing →</a><span class="source">'+t.source+'</span></div>'
+    +'</article>';
+}
+function getFilters(){
+  return {
+    q: $("q").value.trim().toLowerCase(),
+    make: $("make").value, engine: $("engine").value,
+    maxPrice: +$("maxPrice").value, maxMiles: +$("maxMiles").value, maxDist: +$("maxDist").value,
+    deal: $("deal").value, sort: $("sort").value,
+    towOnly: $("towOnly").checked, cleanOnly: $("cleanOnly").checked, oneOnly: $("oneOwnerOnly").checked
+  };
+}
+function passes(t,f){
+  if(state.drive!=="ALL" && t.drive!==state.drive) return false;
+  if(f.make && t.make!==f.make) return false;
+  if(f.engine && t.engineKey!==f.engine) return false;
+  if(t.price>f.maxPrice || t.miles>f.maxMiles || t.dist>f.maxDist) return false;
+  if(f.towOnly && !t.tow) return false;
+  if(f.cleanOnly && t.accidents!=="none") return false;
+  if(f.oneOnly && t.owners!=="1 owner") return false;
+  if(f.deal==="Great" && t.deal.indexOf("Great")!==0) return false;
+  if(f.deal==="Good" && !(t.deal.indexOf("Great")===0 || t.deal.indexOf("Good")===0)) return false;
+  if(f.q){
+    var hay=(t.year+" "+t.make+" "+t.model+" "+t.trim+" "+t.engine+" "+t.city+" "+t.drive).toLowerCase();
+    if(hay.indexOf(f.q)===-1) return false;
+  }
+  return true;
+}
+function sortList(list, sort){
+  var a=list.slice();
+  if(sort==="price-asc") a.sort(function(x,y){return x.price-y.price});
+  else if(sort==="price-desc") a.sort(function(x,y){return y.price-x.price});
+  else if(sort==="miles-asc") a.sort(function(x,y){return x.miles-y.miles});
+  else if(sort==="dist-asc") a.sort(function(x,y){return x.dist-y.dist});
+  else if(sort==="year-desc") a.sort(function(x,y){return y.year-x.year || x.price-y.price});
+  else a.sort(function(x,y){return (x.drive<y.drive?-1:x.drive>y.drive?1:0) || x.rank-y.rank});
+  return a;
+}
+function render(){
+  var f=getFilters();
+  var filtered=TRUCKS.filter(function(t){return passes(t,f)});
+  var sorted=sortList(filtered, f.sort);
+  var isRanked = f.sort==="rank";
+  var top = isRanked ? sorted.filter(function(t){return t.tier==="top"}) : sorted.slice(0, state.drive==="ALL"?10:5);
+  var run = isRanked ? sorted.filter(function(t){return t.tier==="run"}) : sorted.slice(state.drive==="ALL"?10:5);
+  // When sorted non-rank, treat first chunk as featured
+  $("topGrid").innerHTML = top.map(card).join("");
+  $("runGrid").innerHTML = run.map(card).join("");
+  $("topHeading").firstChild.textContent = isRanked ? "Top 5 " : "Featured ";
+  $("topSub").textContent = state.drive==="ALL" ? "— Top 5s from both sides" : "— best "+state.drive+" picks right now";
+  $("runHeading").style.display = run.length ? "" : "none";
+  $("topHeading").style.display = top.length ? "" : "none";
+  $("emptyState").style.display = filtered.length ? "none" : "block";
+  $("countLine").innerHTML = "Showing <b>"+filtered.length+"</b> of 30 trucks"
+    + (state.drive!=="ALL" ? " in <b>"+state.drive+"</b>" : "")
+    + (filtered.length && top.length ? " — <b>"+top.length+"</b> in Top 5, <b>"+run.length+"</b> runners-up" : "");
+  $("towToggle").classList.toggle("on", f.towOnly);
+  $("cleanToggle").classList.toggle("on", f.cleanOnly);
+  $("oneToggle").classList.toggle("on", f.oneOnly);
+  var hasActive = !!(f.q || f.make || f.engine || f.deal || f.maxPrice!==99999 || f.maxMiles!==999999 || f.maxDist!==999 || f.towOnly || f.cleanOnly || f.oneOnly);
+  $("filterToggle").classList.toggle("has-active", hasActive);
+}
+$("filterToggle").addEventListener("click", function(){
+  var panel = $("filterPanel");
+  var open = panel.hidden;
+  panel.hidden = !open;
+  $("filterToggle").setAttribute("aria-expanded", open ? "true" : "false");
+});
+document.querySelectorAll(".tab").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    document.querySelectorAll(".tab").forEach(function(b){b.classList.remove("active")});
+    btn.classList.add("active");
+    state.drive = btn.getAttribute("data-drive");
+    render();
+  });
+});
+["q","make","engine","sort","maxPrice","maxMiles","maxDist","deal","towOnly","cleanOnly","oneOwnerOnly"].forEach(function(id){
+  $(id).addEventListener("input", render);
+  $(id).addEventListener("change", render);
+});
+$("resetBtn").addEventListener("click", function(){
+  $("q").value=""; $("make").value=""; $("engine").value=""; $("sort").value="rank";
+  $("maxPrice").value="99999"; $("maxMiles").value="999999"; $("maxDist").value="999"; $("deal").value="";
+  $("towOnly").checked=false; $("cleanOnly").checked=false; $("oneOwnerOnly").checked=false;
+  render();
+});
+render();
+</script>
+</body>
+</html>
