@@ -108,15 +108,15 @@ footer ul{margin:6px 0;padding-left:18px}
 <div class="wrap">
   <div class="top">
     <h1>Truck Tracker</h1>
-    <p class="checked">Checked Nov 9, 2026 at ~10:40 AM CST · 30 trucks — 15 4WD, 15 2WD</p>
-    <div class="changes"><strong>Nov 9 check:</strong> 2 listings removed, 2 price drops, 3 new trucks added. The 2023 Sierra Pro and 2024 Silverado Custom 4WD listings are gone from CarGurus, and a 2023 Ram Tradesman came off the list as a likely eTorque — all three are in the Sold / removed section below. Two Mobile 2WD Silverados dropped: the Custom by $445 (to $21,995) and the LT by $200 (to $28,195).</div>
+    <p class="checked">Checked Nov 10, 2026 at ~10:21 AM CST · 29 trucks — 14 4WD, 15 2WD</p>
+    <div class="changes"><strong>Nov 10 check:</strong> Two price drops — the 2023 Nissan Titan SV 4WD (D'Iberville) dropped $708 to $29,236, and the 2021 Ford F-150 Lariat 4WD (D'Iberville) dropped $816 to $29,974. One removal — the 2022 Ram 1500 Big Horn 4WD (Moss Point, was $28,423) came off the list because its detail page lists a 48V Belt Starter Generator, which is eTorque, and eTorque Rams are excluded; its 4WD slot is open and will be filled on the next sweep (it's in the Sold / removed section below). Everything else is unchanged in price and mileage, and every other listing is still live.</div>
   </div>
 
   <!-- Tabs -->
   <div class="tabs" role="tablist" aria-label="Drivetrain">
-    <button class="tab active" data-drive="4WD">4WD <small>· 15 trucks</small></button>
+    <button class="tab active" data-drive="4WD">4WD <small>· 14 trucks</small></button>
     <button class="tab" data-drive="2WD">2WD <small>· 15 trucks</small></button>
-    <button class="tab" data-drive="ALL">All trucks <small>· 30</small></button>
+    <button class="tab" data-drive="ALL">All trucks <small>· 29</small></button>
   </div>
 
   <!-- Filters (collapsible) -->
@@ -155,11 +155,11 @@ footer ul{margin:6px 0;padding-left:18px}
   <div class="grid" id="runGrid"></div>
   <div class="empty" id="emptyState">No trucks match those filters. Try widening the price or mileage, or hit “Reset all filters.”</div>
 
-  <h2 id="soldHeading">Sold / removed <span>— gone from the list at the Nov 9 check</span></h2>
+  <h2 id="soldHeading">Sold / removed <span>— gone from the list at the Nov 9–10 checks</span></h2>
   <div class="grid" id="soldGrid"></div>
 
   <footer>
-    <p><strong style="color:var(--ink)">Listings checked Nov 9, 2026 at ~10:40 AM CST.</strong> Prices, mileage, and availability were as listed that day and can change or sell at any time. No sellers have been contacted.</p>
+    <p><strong style="color:var(--ink)">Listings checked Nov 10, 2026 at ~10:21 AM CST.</strong> Prices, mileage, and availability were as listed that day and can change or sell at any time. No sellers have been contacted.</p>
     <h3>Price tracking</h3>
     <ul>
       <li>Baseline set Nov 7, 2026 — <strong style="color:var(--ink)">Lowest seen</strong> starts at the listed price on every truck and only goes down, never up.</li>
@@ -187,15 +187,15 @@ var TRUCKS = [
 {id:5,drive:"4WD",tier:"top",rank:5,year:2023,make:"Chevrolet",model:"Silverado 1500",trim:"Work Truck",engine:"5.3 V8",engineKey:"5.3",price:29971,lowest:29971,prevPrice:29971,firstSeen:"2026-11-07",sold:false,miles:66044,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/details/448049900",tow:true,deal:"",accidents:"none",owners:"1 owner",note:"The V8 pick in the 4WD Top 5 — 5.3 with tow package, 1 owner, no accidents."},
 /* ===== 4WD RUNNERS-UP ===== */
 {id:6,drive:"4WD",tier:"run",rank:6,year:2020,make:"Chevrolet",model:"Silverado 1500",trim:"LT All-Star",engine:"5.3 V8",engineKey:"5.3",price:29638,lowest:29638,prevPrice:29638,firstSeen:"2026-11-07",sold:false,miles:69398,city:"Pensacola, FL",dist:26,source:"AutoTrader",url:"https://www.autotrader.com/cars-for-sale/vehicle/788807647",tow:true,deal:"Great Price",accidents:"conflict",owners:"",note:"Tow package + integrated brake controller, close in Pensacola.",warn:"Accident reports disagree: AutoTrader says none, Cars.com says accidents reported on what looks like the same truck. Verify by VIN."},
-{id:7,drive:"4WD",tier:"run",rank:7,year:2022,make:"Ram",model:"1500",trim:"Big Horn",engine:"5.7 Hemi V8",engineKey:"5.7",price:28423,lowest:28423,prevPrice:28423,firstSeen:"2026-11-07",sold:false,miles:78454,city:"Moss Point, MS",dist:59,source:"CarGurus",url:"https://www.cargurus.com/details/458293003",tow:false,deal:"Great Deal",accidents:"one",owners:"",note:"Hemi power at a Great Deal price.",warn:"1 accident reported."},
-{id:8,drive:"4WD",tier:"run",rank:8,year:2020,make:"Ford",model:"F-150",trim:"XL",engine:"5.0 V8",engineKey:"5.0",price:29985,lowest:29985,prevPrice:29985,firstSeen:"2026-11-07",sold:false,miles:74382,city:"Pascagoula, MS",dist:61,source:"Cars.com",url:"https://www.cars.com/vehicledetail/5c0ee44e-97c1-48e1-a7ae-59d8da3ad4ac/",tow:false,deal:"",accidents:"none",owners:"",note:"The 5.0 Coyote — Ford's most proven engine in this search — in 4WD under $30k."},
-{id:9,drive:"4WD",tier:"run",rank:9,year:2023,make:"Nissan",model:"Titan",trim:"SV",engine:"5.6 V8",engineKey:"5.6",price:29944,lowest:29944,prevPrice:29944,firstSeen:"2026-11-07",sold:false,miles:62005,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/details/462082075",tow:true,deal:"Good Deal",accidents:"none",owners:"1 owner",note:"Simple, reliable 5.6 V8 at Matt Bowers Nissan in D'Iberville — tow package, 0 accidents, 1 owner. (Listing link corrected at the Nov 9 check.)"},
-{id:10,drive:"4WD",tier:"run",rank:10,year:2022,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:28648,lowest:28648,prevPrice:28648,firstSeen:"2026-11-07",sold:false,miles:78726,city:"Wiggins, MS",dist:94,source:"CarGurus",url:"https://www.cargurus.com/details/459735750",tow:true,deal:"",accidents:"conflict",owners:"",note:"Tow package, under $29k.",warn:"Accident reports disagree: CarGurus says 0 accidents, Cars.com says accidents reported. Verify by VIN."},
-{id:11,drive:"4WD",tier:"run",rank:11,year:2021,make:"Ford",model:"F-150",trim:"Lariat",engine:"3.5 EcoBoost",engineKey:"3.5",price:30790,lowest:30790,prevPrice:30790,firstSeen:"2026-11-07",sold:false,miles:76615,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/details/460571074",tow:true,deal:"Great Deal",accidents:"none",owners:"",note:"Nicest trim in the whole tracker — Lariat with tow package, listed $6,869 below market. This is the one 3.5 EcoBoost exception in the list."},
-{id:12,drive:"4WD",tier:"run",rank:12,year:2020,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"5.3 V8",engineKey:"5.3",price:32065,lowest:32065,prevPrice:32065,firstSeen:"2026-11-07",sold:false,miles:31274,city:"Pensacola, FL",dist:21,source:"Cars.com",url:"https://www.cars.com/vehicledetail/39bf7271-c207-4cc7-a345-126c24d5ca1c/",tow:false,deal:"",accidents:"none",owners:"",note:"Lowest-mileage 4WD by a wide margin — just 31k miles. Over the $30k target but inside the $34k max, and close in Pensacola."},
-{id:13,drive:"4WD",tier:"run",rank:13,year:2021,make:"Ram",model:"1500",trim:"Big Horn",engine:"5.7 Hemi V8",engineKey:"5.7",price:25995,lowest:25995,prevPrice:25995,firstSeen:"2026-11-07",sold:false,miles:70861,city:"Eight Mile, AL",dist:37,source:"Cars.com",url:"https://www.cars.com/vehicledetail/40236d6c-911c-4497-9a6a-ff1a190a6270/",tow:false,deal:"",accidents:"reported",owners:"Multiple owners",note:"Cheapest 4WD on either list — the price reflects the history below.",warn:"Accidents reported, multiple owners. Look it over carefully."},
-{id:14,drive:"4WD",tier:"run",rank:14,year:2020,make:"Chevrolet",model:"Silverado 1500",trim:"LT Trail Boss",engine:"5.3 V8",engineKey:"5.3",price:29998,lowest:29998,prevPrice:29998,firstSeen:"2026-11-07",sold:false,miles:82477,city:"Daphne, AL",dist:14,source:"AutoTrader",url:"https://www.autotrader.com/cars-for-sale/vehicle/789343080",tow:true,deal:"",accidents:"unknown",owners:"",note:"Closest truck in the tracker — 14 miles in Daphne — with tow package. Trail Boss sits higher and rides firmer than a standard LT."},
-{id:15,drive:"4WD",tier:"run",rank:15,year:2022,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:27988,lowest:27988,prevPrice:27988,firstSeen:"2026-11-07",sold:false,miles:85108,city:"Fort Walton Beach, FL",dist:56,source:"CarGurus",url:"https://www.cargurus.com/details/458918354",tow:false,deal:"",accidents:"none",owners:"",note:"Clean-history 4WD under $28k; mileage is over the preferred 80k but well under the 100k cap."},
+{id:8,drive:"4WD",tier:"run",rank:7,year:2020,make:"Ford",model:"F-150",trim:"XL",engine:"5.0 V8",engineKey:"5.0",price:29985,lowest:29985,prevPrice:29985,firstSeen:"2026-11-07",sold:false,miles:74382,city:"Pascagoula, MS",dist:61,source:"Cars.com",url:"https://www.cars.com/vehicledetail/5c0ee44e-97c1-48e1-a7ae-59d8da3ad4ac/",tow:false,deal:"",accidents:"none",owners:"",note:"The 5.0 Coyote — Ford's most proven engine in this search — in 4WD under $30k."},
+{id:9,drive:"4WD",tier:"run",rank:8,year:2023,make:"Nissan",model:"Titan",trim:"SV",engine:"5.6 V8",engineKey:"5.6",price:29236,lowest:29236,prevPrice:29944,lowestDate:"2026-11-10",firstSeen:"2026-11-07",sold:false,miles:62005,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/details/462082075",tow:true,deal:"Good Deal",accidents:"none",owners:"1 owner",note:"Simple, reliable 5.6 V8 at Matt Bowers Nissan in D'Iberville — tow package, 0 accidents, 1 owner. Dropped $708 at the Nov 10 check (was $29,944)."},
+{id:10,drive:"4WD",tier:"run",rank:9,year:2022,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:28648,lowest:28648,prevPrice:28648,firstSeen:"2026-11-07",sold:false,miles:78726,city:"Wiggins, MS",dist:94,source:"CarGurus",url:"https://www.cargurus.com/details/459735750",tow:true,deal:"",accidents:"conflict",owners:"",note:"Tow package, under $29k.",warn:"Accident reports disagree: CarGurus says 0 accidents, Cars.com says accidents reported. Verify by VIN."},
+{id:11,drive:"4WD",tier:"run",rank:10,year:2021,make:"Ford",model:"F-150",trim:"Lariat",engine:"3.5 EcoBoost",engineKey:"3.5",price:29974,lowest:29974,prevPrice:30790,lowestDate:"2026-11-10",firstSeen:"2026-11-07",sold:false,miles:76615,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/details/460571074",tow:true,deal:"Great Deal",accidents:"none",owners:"",note:"Nicest trim in the whole tracker — Lariat with tow package, and it dropped $816 at the Nov 10 check (was $30,790). This is the one 3.5 EcoBoost exception in the list."},
+{id:12,drive:"4WD",tier:"run",rank:11,year:2020,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"5.3 V8",engineKey:"5.3",price:32065,lowest:32065,prevPrice:32065,firstSeen:"2026-11-07",sold:false,miles:31274,city:"Pensacola, FL",dist:21,source:"Cars.com",url:"https://www.cars.com/vehicledetail/39bf7271-c207-4cc7-a345-126c24d5ca1c/",tow:false,deal:"",accidents:"none",owners:"",note:"Lowest-mileage 4WD by a wide margin — just 31k miles. Over the $30k target but inside the $34k max, and close in Pensacola."},
+{id:13,drive:"4WD",tier:"run",rank:12,year:2021,make:"Ram",model:"1500",trim:"Big Horn",engine:"5.7 Hemi V8",engineKey:"5.7",price:25995,lowest:25995,prevPrice:25995,firstSeen:"2026-11-07",sold:false,miles:70861,city:"Eight Mile, AL",dist:37,source:"Cars.com",url:"https://www.cars.com/vehicledetail/40236d6c-911c-4497-9a6a-ff1a190a6270/",tow:false,deal:"",accidents:"reported",owners:"Multiple owners",note:"Cheapest 4WD on either list — the price reflects the history below.",warn:"Accidents reported, multiple owners. Look it over carefully."},
+{id:14,drive:"4WD",tier:"run",rank:13,year:2020,make:"Chevrolet",model:"Silverado 1500",trim:"LT Trail Boss",engine:"5.3 V8",engineKey:"5.3",price:29998,lowest:29998,prevPrice:29998,firstSeen:"2026-11-07",sold:false,miles:82477,city:"Daphne, AL",dist:14,source:"AutoTrader",url:"https://www.autotrader.com/cars-for-sale/vehicle/789343080",tow:true,deal:"",accidents:"unknown",owners:"",note:"Closest truck in the tracker — 14 miles in Daphne — with tow package. Trail Boss sits higher and rides firmer than a standard LT."},
+{id:15,drive:"4WD",tier:"run",rank:14,year:2022,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:27988,lowest:27988,prevPrice:27988,firstSeen:"2026-11-07",sold:false,miles:85108,city:"Fort Walton Beach, FL",dist:56,source:"CarGurus",url:"https://www.cargurus.com/details/458918354",tow:false,deal:"",accidents:"none",owners:"",note:"Clean-history 4WD under $28k; mileage is over the preferred 80k but well under the 100k cap."},
+{id:31,drive:"4WD",tier:"run",rank:15,year:0,open:true,make:"",model:"",trim:"",engine:"",engineKey:"",price:0,lowest:0,prevPrice:0,firstSeen:"2026-11-10",sold:false,miles:0,city:"",dist:0,source:"",url:"",tow:false,deal:"",accidents:"unknown",owners:"",note:"Open slot — to be filled on the next sweep. The previous truck here was removed Nov 10: a 2022 Ram 1500 Big Horn 4WD whose detail page lists a 48V Belt Starter Generator (eTorque), and eTorque Rams are excluded."},
 /* ===== 2WD TOP 5 ===== */
 {id:16,drive:"2WD",tier:"top",rank:1,year:2023,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:29421,lowest:29421,prevPrice:29421,firstSeen:"2026-11-07",sold:false,miles:35895,city:"Moss Point, MS",dist:59,source:"CarGurus",url:"https://www.cargurus.com/details/455317636",tow:false,deal:"Great Deal",accidents:"none",owners:"1 owner",note:"Lowest mileage in the whole tracker apart from one — 35,895 mi — with a Great Deal rating, 0 accidents, 1 owner."},
 {id:17,drive:"2WD",tier:"top",rank:2,year:2021,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 Turbo",engineKey:"2.7",price:29878,lowest:29878,prevPrice:29878,firstSeen:"2026-11-07",sold:false,miles:19319,city:"Pensacola, FL",dist:21,source:"Cars.com",url:"https://www.cars.com/vehicledetail/382d1349-b6a2-4a25-ae4b-10d1802bad8e/",tow:false,deal:"",accidents:"none",owners:"1 owner",note:"Lowest mileage overall — just 19,319 miles — and only 21 miles away."},
@@ -215,11 +215,12 @@ var TRUCKS = [
 {id:30,drive:"2WD",tier:"run",rank:15,year:2021,make:"Ford",model:"F-150",trim:"XLT",engine:"2.7 EcoBoost",engineKey:"2.7",price:26098,lowest:26098,prevPrice:26098,firstSeen:"2026-11-09",sold:false,miles:94280,city:"Foley, AL",dist:24,source:"Cars.com",url:"https://www.cars.com/vehicledetail/e2d96325-5c36-45c2-afcf-76ee992014f8/",tow:false,deal:"",accidents:"none",owners:"",note:"New Nov 9 — clean history at Sandy Sansing CDJR in Foley, and a step up in trim (XLT) over the XLs on this list. Bed length isn't stated on the listing page, but the photos show the short bed. Miles are near the top of the range at 94,280."}
 ];
 
-/* ===== SOLD / REMOVED (kept for the record; not counted in the 30 active listings) ===== */
+/* ===== SOLD / REMOVED (kept for the record; not counted in the 29 active listings) ===== */
 var SOLD = [
 {id:101,drive:"4WD",tier:"run",rank:2,year:2023,make:"GMC",model:"Sierra 1500",trim:"Pro",engine:"2.7 TurboMax",engineKey:"2.7",price:28662,lowest:28662,prevPrice:28662,firstSeen:"2026-11-07",sold:true,miles:81606,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/details/463077899",tow:true,deal:"Great Deal",accidents:"none",owners:"",note:"Removed at the Nov 9, 2026 check — the CarGurus listing is gone, so it's treated as sold. It was the #2 4WD pick at $28,662."},
 {id:102,drive:"4WD",tier:"run",rank:3,year:2024,make:"Chevrolet",model:"Silverado 1500",trim:"Custom",engine:"2.7 TurboMax",engineKey:"2.7",price:30405,lowest:30405,prevPrice:30405,firstSeen:"2026-11-07",sold:true,miles:61752,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/details/458430640",tow:true,deal:"Great Deal",accidents:"none",owners:"1 owner",note:"Removed at the Nov 9, 2026 check — the CarGurus listing is gone, so it's treated as sold. It was the #3 4WD pick at $30,405."},
-{id:103,drive:"2WD",tier:"run",rank:15,year:2023,make:"Ram",model:"1500",trim:"Tradesman",engine:"5.7 Hemi V8",engineKey:"5.7",price:29971,lowest:29971,prevPrice:29971,firstSeen:"2026-11-07",sold:true,miles:48285,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/search?sourceContext=carGurusHomePageModel&zip=36567&hideNationwideShipping=true&isDeliveryEnabled=false&makeModelTrimPaths=m191%2Fd2110&priceDropsOnly=false&maxPrice=34000&startYear=2020&maxMileage=100000&distance=100&nonShippableBaseline=33&sortDirection=ASC&sortType=PRICE&cabins=CREW&fuelTypes=GASOLINE&enginePaths=V8",tow:false,deal:"",accidents:"unknown",owners:"",note:"Removed at the Nov 9, 2026 check — not sold; pulled from the list for the reason below. It was 2WD runner-up #15 at $29,971.",warn:"Flagged as a likely eTorque: CarGurus lists a 0.4 kWh battery on this truck, and eTorque Rams are excluded from this search."}
+{id:103,drive:"2WD",tier:"run",rank:15,year:2023,make:"Ram",model:"1500",trim:"Tradesman",engine:"5.7 Hemi V8",engineKey:"5.7",price:29971,lowest:29971,prevPrice:29971,firstSeen:"2026-11-07",sold:true,miles:48285,city:"D'Iberville, MS",dist:80,source:"CarGurus",url:"https://www.cargurus.com/search?sourceContext=carGurusHomePageModel&zip=36567&hideNationwideShipping=true&isDeliveryEnabled=false&makeModelTrimPaths=m191%2Fd2110&priceDropsOnly=false&maxPrice=34000&startYear=2020&maxMileage=100000&distance=100&nonShippableBaseline=33&sortDirection=ASC&sortType=PRICE&cabins=CREW&fuelTypes=GASOLINE&enginePaths=V8",tow:false,deal:"",accidents:"unknown",owners:"",note:"Removed at the Nov 9, 2026 check — not sold; pulled from the list for the reason below. It was 2WD runner-up #15 at $29,971.",warn:"Flagged as a likely eTorque: CarGurus lists a 0.4 kWh battery on this truck, and eTorque Rams are excluded from this search."},
+{id:104,drive:"4WD",tier:"run",rank:7,year:2022,make:"Ram",model:"1500",trim:"Big Horn",engine:"5.7 Hemi V8",engineKey:"5.7",price:28423,lowest:28423,prevPrice:28423,firstSeen:"2026-11-07",sold:true,miles:78454,city:"Moss Point, MS",dist:59,source:"CarGurus",url:"https://www.cargurus.com/details/458293003",tow:false,deal:"Great Deal",accidents:"one",owners:"",note:"Removed at the Nov 10, 2026 check — not sold; pulled from the list for the reason below. It was 4WD runner-up #7 at $28,423, and its slot stays open until the next sweep.",warn:"Detail page lists a 48V Belt Starter Generator — that's eTorque, and eTorque Rams are excluded from this search. (Also had 1 accident reported.)"}
 ];
 
 var state = { drive:"4WD" };
@@ -266,6 +267,12 @@ function badges(t){
   return h;
 }
 function card(t){
+  if(t.open){
+    return '<article class="card">'
+      +'<div class="card-head"><div class="title">Open slot<small>To be filled on the next sweep</small></div><span class="rank">#'+t.rank+' '+t.drive+'</span></div>'
+      +'<div class="note">'+t.note+'</div>'
+      +'</article>';
+  }
   var warn = t.warn ? '<div class="note warn-note"><strong>Heads-up:</strong> '+t.warn+'</div>' : '';
   var soldBanner = t.sold ? '<div class="sold-banner">SOLD — no longer listed · Last seen $'+fmt(t.price)+'</div>' : '';
   return '<article class="card'+(t.tier==="top"?" top":"")+(t.sold?" sold":"")+'">'
@@ -289,6 +296,7 @@ function getFilters(){
   };
 }
 function passes(t,f){
+  if(t.open) return false;
   if(state.drive!=="ALL" && t.drive!==state.drive) return false;
   if(f.make && t.make!==f.make) return false;
   if(f.engine && t.engineKey!==f.engine) return false;
@@ -333,7 +341,7 @@ function render(){
   $("soldGrid").innerHTML = soldList.map(card).join("");
   $("soldHeading").style.display = soldList.length ? "" : "none";
   $("soldGrid").style.display = soldList.length ? "" : "none";
-  $("countLine").innerHTML = "Showing <b>"+filtered.length+"</b> of 30 trucks"
+  $("countLine").innerHTML = "Showing <b>"+filtered.length+"</b> of 29 trucks"
     + (state.drive!=="ALL" ? " in <b>"+state.drive+"</b>" : "")
     + (filtered.length && top.length ? " — <b>"+top.length+"</b> in Top 5, <b>"+run.length+"</b> runners-up" : "");
   $("towToggle").classList.toggle("on", f.towOnly);
